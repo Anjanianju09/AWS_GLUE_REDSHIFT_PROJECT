@@ -1,0 +1,6 @@
+from pyspark.sql.functions import expr
+
+df = df.withColumn(
+    "Revenue",
+    expr("Quantity * Price")
+)
