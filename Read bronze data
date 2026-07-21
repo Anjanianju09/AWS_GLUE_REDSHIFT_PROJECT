@@ -1,0 +1,9 @@
+from awsglue.context import GlueContext
+from pyspark.context import SparkContext
+
+sc = SparkContext()
+glueContext = GlueContext(sc)
+spark = glueContext.spark_session
+
+df = spark.read.option("header", True).csv(
+"s3://retail-sales-project/bronze/sales/")
