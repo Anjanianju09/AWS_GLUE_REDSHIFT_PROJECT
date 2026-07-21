@@ -1,0 +1,45 @@
+stages:
+  - validate
+  - test
+  - build
+  - deploy_dev
+  - deploy_test
+  - deploy_prod
+
+validate:
+  stage: validate
+  image: python:3.10
+  script:
+    - python -m py_compile glue_jobs/*.py
+    - python -m py_compile airflow/dags/*.py
+
+unit_test:
+  stage: test
+  image: python:3.10
+  script:
+    - pip install pytest
+    - pytest tests/
+
+build:
+  stage: build
+  script:
+    - zip -r deployment.zip glue_jobs airflow sql
+
+deploy_dev:
+  stage: deploy_dev
+  script:
+    - aws s3 cp glue_jobs s3://retail-dev/scripts/ --recursive
+    - aws s3 cp airflow/dags s3://retail-dev/dags/ --recursive
+
+deploy_test:
+  stage: deploy_test
+  script:
+    - aws s3 cp glue_jobs s3://retail-test/scripts/ --recursive
+    - aws s3 cp airflow/dags s3://retail-test/dags/ --recursive
+
+deploy_prod:
+  stage: deploy_prod
+  when: manual
+  script:
+    - aws s3 cp glue_jobs s3://retail-prod/scripts/ --recursive
+    - aws s3 cp airflow/dags s3://retail-prod/dags/ --recursive
