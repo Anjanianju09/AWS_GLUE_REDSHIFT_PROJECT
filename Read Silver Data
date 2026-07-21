@@ -1,0 +1,2 @@
+silver = spark.read.parquet(
+"s3://retail-sales-project/silver/sales/")
