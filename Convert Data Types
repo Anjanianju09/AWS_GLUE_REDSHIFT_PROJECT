@@ -1,0 +1,9 @@
+df = df.withColumn(
+    "Quantity",
+    col("Quantity").cast("int")
+)
+
+df = df.withColumn(
+    "Price",
+    col("Price").cast("double")
+)
