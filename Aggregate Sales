@@ -1,0 +1,6 @@
+from pyspark.sql.functions import sum
+
+gold = silver.groupBy("ProductID") \
+.agg(
+sum("Revenue").alias("TotalRevenue")
+)
