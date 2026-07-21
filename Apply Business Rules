@@ -1,0 +1,1 @@
+df = df.filter(col("Quantity") > 0)
